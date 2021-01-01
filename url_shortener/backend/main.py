@@ -1,3 +1,6 @@
+import pprint
+import random
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -14,31 +17,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-class Numero(BaseModel):
-    valor: int
+database = {}
 
 
-numero = Numero(valor=0)
-
-
-class Shortlink(BaseModel):
+class Url(BaseModel):
     url: str
 
 
-shortlink = Shortlink(url="")
+class Shortlink(Url):
+    shortlink: int
 
 
-@app.get("/shortlink")
-def get_shortlink() -> dict:
-    """Retorna o valor da variavel global :shortlink:"""
-    global shortlink
-    return {"shortlink": shortlink.url}
+@app.get("/shortlink/{shortlink}")
+def get_full_url(shortlink: int) -> Url:
+    global database
+    return {"url": database[shortlink]}
 
 
 @app.post("/shortlink")
-def update_shortlink(new_shortlink: Shortlink) -> dict:
-    """Altera o valor da variavel global :shortlink: por :new_shortlink:"""
-    global shortlink
-    shortlink.url = new_shortlink
-    return {"shortlink": shortlink.url}
+def create_shortlink(url: Url) -> Shortlink:
+    global database
+    shortlink = random.randint(1, 2 ** 32)
+    database[shortlink] = url.url
+    pprint.pprint(database)
+    return {"url": url.url, "shortlink": shortlink}

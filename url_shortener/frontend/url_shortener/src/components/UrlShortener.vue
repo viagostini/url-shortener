@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Último Shortlink: {{ value }}</h1>
-    <form @submit.prevent="updateCurrentShortlink">
+    <form @submit.prevent="createShortlink">
       <input v-model="new_value" placeholder="Novo link" />
       <button type="submit">update</button>
     </form>
+    <h1>Shortlink: {{ value }}</h1>
   </div>
 </template>
 
@@ -14,26 +14,14 @@ export default {
   data: () => {
     return {
       value: null,
+      new_value: null,
     };
   },
   methods: {
-    async getCurrentShortlink() {
-      let response = await fetch("http://localhost:8000/shortlink", {
-        method: "get",
-      });
-      if (response.ok) {
-        let resp = await response.json();
-        this.value = resp.shortlink.url;
-        return;
-      }
-      this.value = "could not load from server";
-      return;
-    },
-    async updateCurrentShortlink() {
+    async createShortlink() {
       if (this.new_value === null) {
         return;
-      } // checagem para valores null e 0
-
+      }
       fetch("http://localhost:8000/shortlink", {
         method: "post",
         body: JSON.stringify({
@@ -41,16 +29,16 @@ export default {
         }),
         headers: { "Content-type": "application/json" },
       })
-        .then(() => this.refreshPage())
+        .then((response) => this.displayShortlink(response))
         .catch((err) => console.error(err));
       return;
     },
-    refreshPage() {
-      location.reload();
+    async displayShortlink(response) {
+      let res = await response.json();
+      this.value = res.shortlink;
+      this.new_value = "";
+      console.log(res);
     },
-  },
-  mounted() {
-    this.getCurrentShortlink();
   },
 };
 </script>
