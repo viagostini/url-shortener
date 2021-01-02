@@ -4,10 +4,10 @@ help: ## Show this help
 
 .PHONY: lint
 lint:  ## Linter the code.
-	isort url_shortener tests --check
+	isort url_shortener/backend tests --check
 	flake8 .
-	mypy url_shortener
+	mypy url_shortener/backend
 
 .PHONY: test
 test:  ## Test your code.
-	poetry run pytest tests/ --cov=url_shortener --cov-report=term-missing:skip-covered --cov-report=xml
+	poetry run pytest tests/ --cov=url_shortener/backend --cov-report=term-missing:skip-covered --cov-report=xml
