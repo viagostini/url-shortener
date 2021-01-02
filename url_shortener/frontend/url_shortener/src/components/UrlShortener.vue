@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <form @submit.prevent="createShortlink">
-      <input v-model="new_value" placeholder="Novo link" />
-      <button type="submit">update</button>
-    </form>
-    <h1>Shortlink: {{ value }}</h1>
+  <div class="flex-container">
+    <div>
+      <form @submit.prevent="createShortlink">
+        <input v-model="new_value" placeholder="Paste a link" />
+        <button type="submit">Create Shortlink</button>
+      </form>
+      <h1>Shortlink: {{ value }}</h1>
+    </div>
   </div>
 </template>
 
