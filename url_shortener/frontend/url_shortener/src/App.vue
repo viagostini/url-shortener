@@ -22,6 +22,15 @@ body {
   margin: 0;
   background-color: #fffafa;
 }
+
+.btn {
+  margin-left: 10px;
+}
+
+h1 {
+  margin-top: 10px;
+}
+
 .flex-container {
   height: 100%;
   padding: 0;

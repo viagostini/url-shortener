@@ -1,5 +1,7 @@
 import pprint
-import random
+import secrets
+import string
+from typing import Dict
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-database = {}
+database: Dict[str, str] = {}
 
 
 class Url(BaseModel):
@@ -25,19 +27,29 @@ class Url(BaseModel):
 
 
 class Shortlink(Url):
-    shortlink: int
+    shortlink: str
 
 
-@app.get("/shortlink/{shortlink}")
-def get_full_url(shortlink: int) -> Url:
+BASE_SHORTLINK_URL = "localhost:8000/"
+
+
+def random_shortlink(length: int = 7) -> str:
+    characters = string.ascii_letters + string.digits
+    return "".join(secrets.choice(characters) for _ in range(length))
+
+
+@app.get("/{shortlink}")
+def get_full_url(shortlink: str) -> Url:
     global database
-    return {"url": database[shortlink]}
+    return Url(url=database[shortlink])
 
 
-@app.post("/shortlink")
+@app.post("/")
 def create_shortlink(url: Url) -> Shortlink:
     global database
-    shortlink = random.randint(1, 2 ** 32)
+    shortlink = random_shortlink()
+    while shortlink in database:
+        shortlink = random_shortlink()
     database[shortlink] = url.url
     pprint.pprint(database)
-    return {"url": url.url, "shortlink": shortlink}
+    return Shortlink(url=url.url, shortlink=BASE_SHORTLINK_URL + shortlink)

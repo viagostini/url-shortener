@@ -12,7 +12,7 @@
         </div>
       </form>
       <h1 :style="{ display: shortlink_display }" id="shortlink-text">
-        Shortlink: {{ value }}
+        {{ value }}
       </h1>
     </div>
   </div>
@@ -33,7 +33,7 @@ export default {
       if (this.new_value === null) {
         return;
       }
-      fetch("http://localhost:8000/shortlink", {
+      fetch("http://localhost:8000/", {
         method: "post",
         body: JSON.stringify({
           url: this.new_value,
