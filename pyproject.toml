@@ -25,6 +25,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.6.1"
 fastapi = {extras = ["requests", "uvicorn"], version = "^0.63.0"}
+uvicorn = {extras = ["standard"], version = "^0.13.3"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
