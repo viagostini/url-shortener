@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  backend:
+    image: url_shortener:backend
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: url-shortener-backend
+    ports:
+      - "8000:80"
+    entrypoint:
+      - /start-reload.sh
+    volumes:
+      - ./url_shortener/backend:/app/url_shortener/backend
+
+  frontend:
+    image: url_shortener:frontend
+    build:
+      context: url_shortener/frontend/url_shortener/
+      dockerfile: Dockerfile.frontend
+    container_name: url-shortener-frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./url_shortener/frontend/url_shortener:/app
+    depends_on:
+      - backend
