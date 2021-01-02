@@ -2,10 +2,18 @@
   <div class="flex-container">
     <div>
       <form @submit.prevent="createShortlink">
-        <input v-model="new_value" placeholder="Paste a link" />
-        <button type="submit">Create Shortlink</button>
+        <div class="input-group">
+          <input
+            v-model="new_value"
+            placeholder="Paste a link"
+            class="form-control"
+          />
+          <button type="submit" class="btn btn-dark">Create Shortlink</button>
+        </div>
       </form>
-      <h1>Shortlink: {{ value }}</h1>
+      <h1 :style="{ display: shortlink_display }" id="shortlink-text">
+        Shortlink: {{ value }}
+      </h1>
     </div>
   </div>
 </template>
@@ -17,6 +25,7 @@ export default {
     return {
       value: null,
       new_value: null,
+      shortlink_display: "none",
     };
   },
   methods: {
@@ -39,6 +48,7 @@ export default {
       let res = await response.json();
       this.value = res.shortlink;
       this.new_value = "";
+      this.shortlink_display = "block";
       console.log(res);
     },
   },
