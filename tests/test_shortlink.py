@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
-from url_shortener.backend.main import app, database
+from url_shortener.backend.database import Database
+from url_shortener.backend.main import app
 
 client = TestClient(app)
 
@@ -20,12 +21,12 @@ def test_create_shortlink():
     assert shortlink.isalnum()
     print(response_json["shortlink"])
     # hacky check for insertion for now
-    assert database[shortlink] == "testurl.com"
+    assert Database.get_url(shortlink) == "testurl.com"
 
 
 def test_get_full_url():
     # hacky insert to database for now
-    database["1234567"] = "testurl.com"
+    Database.save_shortlink("testurl.com", "1234567")
 
     response = client.get("/1234567")
     assert response.status_code == 200
