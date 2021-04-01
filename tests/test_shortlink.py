@@ -1,6 +1,5 @@
 from fastapi.testclient import TestClient
 
-from url_shortener.backend.database import Database
 from url_shortener.backend.main import app
 
 client = TestClient(app)

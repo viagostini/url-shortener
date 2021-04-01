@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import secrets
 import string
 
@@ -16,7 +18,7 @@ class Shortlink(Url):
     shortlink: str
 
     @classmethod
-    def create_new(self, url: str) -> str:
+    def create_new(self, url: str) -> Shortlink:
         shortlink = self._random_shortlink()
         while Database.contains(shortlink):
             shortlink = self._random_shortlink()

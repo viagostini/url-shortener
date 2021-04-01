@@ -13,6 +13,8 @@ services:
       - /start-reload.sh
     volumes:
       - ./url_shortener/backend:/app/url_shortener/backend
+    depends_on:
+      - database
 
   frontend:
     image: url_shortener:frontend
@@ -26,3 +28,14 @@ services:
       - ./url_shortener/frontend/url_shortener:/app
     depends_on:
       - backend
+
+  database:
+    image: 'mongo'
+    container_name: url-shortener-database
+    ports:
+      - '27017:27017'
+    environment:
+      - USER_ID=1001
+      - GROUP_ID=1001
+    volumes:
+      - ./data/db:/data/db

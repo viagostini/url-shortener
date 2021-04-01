@@ -6,7 +6,12 @@ from url_shortener.backend.models import Shortlink, Url
 
 app = FastAPI()
 
-origins = ["http://localhost:8080", "http://127.0.0.1:8080", "http://0.0.0.0:8089/"]
+origins = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://0.0.0.0:8089/",
+    "http://localhost:27017",
+]
 
 app.add_middleware(
     CORSMiddleware,
